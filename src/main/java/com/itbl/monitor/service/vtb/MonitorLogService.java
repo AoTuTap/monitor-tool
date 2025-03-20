@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 import com.itbl.monitor.model.vtb.MonitorLog;
 import com.itbl.monitor.repository.vtb.MonitorLogRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class MonitorLogService {
     private final MonitorLogRepository monitorLogRepository;
 
@@ -16,7 +19,7 @@ public class MonitorLogService {
     }
 
     public List<MonitorLog> getAllLogs() {
-        return monitorLogRepository.findAll();
+        return monitorLogRepository.findAllByOrderByAlarmTimeDesc();
     }
 
     public Long countLongs() {
@@ -25,6 +28,10 @@ public class MonitorLogService {
 
     public void deleteLog(Long id) {
         monitorLogRepository.deleteById(id);
+    }
+
+    public void deleteLogsByIds(List<Long> ids) {
+        monitorLogRepository.deleteByIdIn(ids);
     }
 
 }
